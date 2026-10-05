@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Build output (npm run build)
+dist/
+*.tsbuildinfo
+.vite/
+
+# Environment - real values stay local. Keep the template and the demo-mode
+# file (it only switches on local demo mode and points at localhost; no secrets).
+.env
+.env.*
+!.env.example
+!.env.demo
+
+# Tests / coverage
+coverage/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editors & OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db

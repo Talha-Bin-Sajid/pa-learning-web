@@ -1,0 +1,199 @@
+/* Layer order: MUI's emotion styles sit between Tailwind's base and utilities,
+   so utility classes can always override MUI defaults. */
+@layer theme, base, mui, components, utilities;
+@import 'tailwindcss';
+
+/* ------------------------------------------------------------------
+   Design tokens - transcribed from the Project Accountants prototype.
+   The visual language: black + white, Poppins, square corners,
+   uppercase tracked micro-labels, one soft card shadow.
+   ------------------------------------------------------------------ */
+@theme {
+  --font-sans: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+
+  --color-ink: #000000;
+  --color-body: #262719;
+  --color-muted: rgb(38 39 25 / 0.55);
+  --color-faint: rgb(38 39 25 / 0.5);
+  --color-subtle: rgb(38 39 25 / 0.4);
+
+  --color-pa-blue: #2d8dfe;
+  --color-pa-blue-dark: #2c609c;
+  --color-pa-indigo: #6663fb;
+  --color-pa-cyan: #57bfdf;
+  --color-pa-teal: #3193b1;
+  --color-pa-purple: #8843f8;
+  --color-pa-red: #ec4f3c;
+  --color-pa-green: #15b85f;
+
+  --color-panel: #f4f7fb;
+  --color-track: #ecf4ff;
+  --color-danger-tint: #fdecea;
+
+  --color-line: rgb(0 0 0 / 0.08);
+  --color-line-strong: rgb(0 0 0 / 0.16);
+
+  --shadow-card: 0 10px 50px rgb(34 47 62 / 0.1);
+  --shadow-card-hover: 0 14px 40px rgb(34 47 62 / 0.18);
+  --shadow-modal: 0 10px 50px rgb(34 47 62 / 0.3);
+
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-reveal: cubic-bezier(0.76, 0, 0.24, 1);
+
+  --animate-fade-in: fadein 0.5s both;
+  --animate-fade-up: fadeup 0.45s var(--ease-standard) both;
+  --animate-soft-in: softin 0.7s both;
+  --animate-reveal: reveal 1.05s var(--ease-reveal) both;
+  --animate-rule: rule 0.9s var(--ease-reveal) both;
+  --animate-bar: barfill 0.6s var(--ease-standard) both;
+
+  @keyframes fadein {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes fadeup {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes softin {
+    0% {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    100% {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes reveal {
+    0% {
+      clip-path: inset(0 100% 0 0);
+    }
+    100% {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+  @keyframes rule {
+    0% {
+      transform: scaleX(0);
+    }
+    100% {
+      transform: scaleX(1);
+    }
+  }
+  @keyframes barfill {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+}
+
+@layer base {
+  html,
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-body);
+    background: var(--color-panel);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  a {
+    color: var(--color-pa-blue);
+    text-decoration: none;
+  }
+  a:hover {
+    color: var(--color-pa-blue-dark);
+  }
+  input,
+  select,
+  textarea,
+  button {
+    font-family: inherit;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-pa-blue);
+    outline-offset: 2px;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgb(0 0 0 / 0.18);
+  }
+}
+
+@layer components {
+  /* Uppercase, tracked micro-label used across the prototype. */
+  .micro-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: var(--color-faint);
+  }
+  /* Form control look (native inputs styled to match the reference). */
+  .pa-input {
+    width: 100%;
+    padding: 10px 13px;
+    border: 1px solid var(--color-line-strong);
+    background: #fff;
+    font-size: 13px;
+    color: var(--color-body);
+    border-radius: 0;
+    transition: border-color 120ms var(--ease-standard);
+  }
+  .pa-input:focus {
+    outline: none;
+    border-color: var(--color-pa-blue);
+  }
+  .pa-input:disabled {
+    background: var(--color-panel);
+    color: var(--color-faint);
+  }
+  .pa-input[aria-invalid='true'] {
+    border-color: var(--color-pa-red);
+  }
+  /* Staggered entrance for page sections. */
+  .stagger > * {
+    animation: var(--animate-fade-up);
+  }
+  .stagger > *:nth-child(2) {
+    animation-delay: 40ms;
+  }
+  .stagger > *:nth-child(3) {
+    animation-delay: 80ms;
+  }
+  .stagger > *:nth-child(4) {
+    animation-delay: 120ms;
+  }
+  .stagger > *:nth-child(5) {
+    animation-delay: 160ms;
+  }
+  .stagger > *:nth-child(n + 6) {
+    animation-delay: 200ms;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 1ms !important;
+  }
+}
