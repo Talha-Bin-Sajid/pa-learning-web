@@ -33,7 +33,8 @@ export function configureApi(tokenProvider: TokenProvider, unauthorized: Unautho
 type Query = Record<string, string | number | boolean | null | undefined>;
 
 function url(path: string, query?: Query): string {
-  const u = new URL(`${config.apiUrl}${path}`);
+  // apiUrl may be relative (e.g. "/api/v1" behind the nginx proxy), so resolve it against the page origin.
+  const u = new URL(`${config.apiUrl}${path}`, window.location.origin);
   for (const [k, v] of Object.entries(query ?? {})) if (v !== undefined && v !== null && v !== '') u.searchParams.set(k, String(v));
   return u.toString();
 }
