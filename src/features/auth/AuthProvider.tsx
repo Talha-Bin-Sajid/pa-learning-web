@@ -62,7 +62,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [signIn],
   );
 
-  const blockedReason = meQuery.error && (meQuery.error as { status?: number }).status === 403 ? (meQuery.error as Error).message : null;
+  // 403 = account not allowed. Any other failure (server down, bad gateway) must also
+  // surface here, otherwise the app sits on the loader forever.
+  const blockedReason = meQuery.error
+    ? (meQuery.error as { status?: number }).status === 403
+      ? (meQuery.error as Error).message
+      : `Could not load your profile: ${(meQuery.error as Error).message}`
+    : null;
   const status: Status =
     session === undefined || (session && meQuery.isPending && !blockedReason)
       ? 'loading'
